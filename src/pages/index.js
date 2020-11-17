@@ -1,5 +1,12 @@
 import React from "react"
+import {Lolly} from "../component/lolly"
 
 export default function Home() {
-  return <div>Hello world!</div>
-}
+
+  return(
+    
+    <div>
+  <Lolly/>
+    </div>
+
+  )}

@@ -1,37 +1,100 @@
-const { ApolloServer, gql } = require('apollo-server-lambda')
+const { ApolloServer, gql } = require("apollo-server-lambda")
+
+const faunadb = require("faunadb")
+const q = faunadb.query
+const shortid = require("shortid")
 
 const typeDefs = gql`
   type Query {
-    hello: String
-    allAuthors: [Author!]
-    author(id: Int!): Author
-    authorByName(name: String!): Author
+    getLollies: [Lolly]
   }
-  type Author {
-    id: ID!
-    name: String!
-    married: Boolean!
+  type Lolly {
+    recipientName: String!
+    message: String!
+    senderName: String!
+    flavourTop: String!
+    flavourMiddle: String!
+    flavourBottom: String!
+    lollyPath: String!
+  }
+  type Mutation {
+    createLolly(
+      recipientName: String!
+      message: String!
+      senderName: String!
+      flavourTop: String!
+      flavourMiddle: String!
+      flavourBottom: String!
+    ): Lolly
   }
 `
-
-const authors = [
-  { id: 1, name: 'Terry Pratchett', married: false },
-  { id: 2, name: 'Stephen King', married: true },
-  { id: 3, name: 'JK Rowling', married: false },
-]
+var adminClient = new faunadb.Client({
+  secret: process.env.FAUNA,
+})
 
 const resolvers = {
   Query: {
-    hello: () => {
-      return 'Hello, world!'
+    getLolly: async (root, args, context) => {
+      try {
+        const result = await adminClient.query(
+          q.Map(
+            q.Paginate(q.Match(q.Index("lolly"))),
+            q.Lambda(x => q.Get(x))
+          )
+        )
+        console.log(result.data)
+
+        return result.data.map(da => {
+          return {
+            id: d.ts,
+            recipientName: d.data.recipientName,
+            message: d.data.message,
+            senderName: d.data.senderName,
+            flavourTop: d.data.flavourTop,
+            flavourMiddle: d.data.flavourMiddle,
+            flavourBottom: d.data.flavourBottom,
+            lollyPath: d.data.lollyPath,
+          }
+        })
+      } catch (err) {
+        console.log(err)
+      }
     },
-    allAuthors: () => {
-      return authors
-    },
-    author: () => {},
-    authorByName: (root, args) => {
-      console.log('hihhihi', args.name)
-      return authors.find((author) => author.name === args.name) || 'NOTFOUND'
+  },
+  Mutation: {
+    createLolly: async (
+      _,
+      {
+        recipientName,
+        message,
+        senderName,
+        flavourTop,
+        flavourMiddle,
+        flavourBottom,
+      }
+    ) => {
+
+
+      const idR = shortid.generate()
+ 
+
+      const result = await client.query(
+        q.Create(q.Collection("lolly"), {
+          data: {
+            recipientName,
+        message,
+        senderName,
+        flavourTop,
+        flavourMiddle,
+        flavourBottom,
+        lollyPath:idR,
+          }
+        })
+      )
+
+      console.log("result", result)
+      console.log("result", result.data)
+      return result.data
     },
   },
 }
@@ -41,6 +104,4 @@ const server = new ApolloServer({
   resolvers,
 })
 
-const handler = server.createHandler()
-
-module.exports = { handler }
+exports.handler = server.createHandler()

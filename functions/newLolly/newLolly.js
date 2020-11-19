@@ -3,7 +3,7 @@ const { ApolloServer, gql } = require("apollo-server-lambda")
 const faunadb = require("faunadb")
 const q = faunadb.query
 const shortid = require("shortid")
-
+require("dotenv").config()
 const typeDefs = gql`
   type Query {
     getLollies: [Lolly]
@@ -25,6 +25,7 @@ const typeDefs = gql`
       flavourTop: String!
       flavourMiddle: String!
       flavourBottom: String!
+     
     ): Lolly
   }
 `
@@ -34,7 +35,7 @@ var adminClient = new faunadb.Client({
 
 const resolvers = {
   Query: {
-    getLolly: async (root, args, context) => {
+    getLollies: async (root, args, context) => {
       try {
         const result = await adminClient.query(
           q.Map(
@@ -56,11 +57,15 @@ const resolvers = {
             lollyPath: d.data.lollyPath,
           }
         })
-      } catch (err) {
+      } 
+      
+      catch (err) {
         console.log(err)
       }
+      
     },
   },
+  
   Mutation: {
     createLolly: async (
       _,
@@ -73,21 +78,16 @@ const resolvers = {
         flavourBottom,
       }
     ) => {
-
-
-      const idR = shortid.generate()
- 
-
-      const result = await client.query(
+       const result = await client.query(
         q.Create(q.Collection("lolly"), {
-          data: {
-            recipientName,
+        data: {
+        recipientName,
         message,
         senderName,
         flavourTop,
         flavourMiddle,
         flavourBottom,
-        lollyPath:idR,
+        lollyPath:shortid.generate(),
           }
         })
       )

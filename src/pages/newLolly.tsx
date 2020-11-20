@@ -123,7 +123,7 @@ export default function newLolly() {
           </div>
         </div>
       </div>
-      </>: <Share lollyPath={data?.addLolly?.lollyPath} recipientName={data?.addLolly?.recipientName} senderName={data?.addLolly?.senderName} message={data?.addLolly?.message} />}
+      </>: <Share lollyPath={data?.createLolly?.lollyPath} recipientName={data?.createLolly?.recipientName} senderName={data?.createLolly?.senderName} message={data?.createLolly?.message} />}
     </div>
   )
 }

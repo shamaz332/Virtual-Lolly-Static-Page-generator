@@ -3,25 +3,26 @@ exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
 
   const { data } = await graphql(`
-    {
-        Lollies {
-        getLollies {
-          recipientName
-          message
-          senderName
-          flavourTop
-          flavourMiddle
-          flavourBottom
-          lollyPath
-        }
+  query MyQuery {
+    Lollies {
+      getLollies {
+        flavourBottom
+        flavourMiddle
+        flavourTop
+        lollyPath
+        message
+        recipientName
+        senderName
       }
     }
+  }
+  
   `)
 
   data.Lollies.getLollies.forEach(node => {
     createPage({
       path: `lolly/${node.lollyPath}`,
-      component: path.resolve("./src/templates/template.tsx"),
+      component: path.resolve("./src/templates/template"),
       context: {
         flavourTop: node.flavourTop,
         flavourMiddle: node.flavourMiddle,

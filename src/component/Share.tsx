@@ -13,9 +13,9 @@ const Share: React.FC<ResultProps> = ({ lollyPath, recipientName, message, sende
             <h4>Share lolly with this link:</h4>
             <h3>{`https://shamaz-vlolly.netlify.app/lolly/${lollyPath}`}</h3>
             <div className="result__details">
-                <p className="reciever">To{recipientName}</p>
-                <p className="message">MSG{message}</p>
-                <p className="sender">From{senderName}</p>
+                <p className="reciever">To____{recipientName}</p>
+                <p className="message">MSG____{message}</p>
+                <p className="sender">From____{senderName}</p>
             </div>
         </div>
     )

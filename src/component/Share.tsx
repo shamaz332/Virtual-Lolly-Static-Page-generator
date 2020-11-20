@@ -1,20 +1,21 @@
 import React from 'react'
 import "../css/Result.css"
 export interface ResultProps {
-    link: string;
-    reciever: string;
+    lollyPath: string;
+    recipientName: string;
     message: string;
-    sender: string;
+    senderName: string;
 }
-const Share: React.FC<ResultProps> = ({ link, reciever, message, sender }) => {
+const Share: React.FC<ResultProps> = ({ lollyPath, recipientName, message, senderName }) => {
+    console.log(recipientName)
     return (
-        <div className="result">
+        <div>
             <h4>Share lolly with this link:</h4>
-            <h3>{`https://hv-virtual-lolly.netlify.app/lolly/${link}`}</h3>
+            <h3>{`https://shamaz-vlolly.netlify.app/lolly/${lollyPath}`}</h3>
             <div className="result__details">
-                <p className="reciever">{reciever}</p>
-                <p className="message">{message}</p>
-                <p className="sender">____{sender}</p>
+                <p className="reciever">To{recipientName}</p>
+                <p className="message">MSG{message}</p>
+                <p className="sender">From{senderName}</p>
             </div>
         </div>
     )

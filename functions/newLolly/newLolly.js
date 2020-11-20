@@ -6,7 +6,7 @@ const shortid = require("shortid");
 require("dotenv").config()
 const typeDefs = gql`
   type Query {
-    hello: String
+    getLollies: [Lolly]
   }
   type Lolly {
     recipientName: String!
@@ -21,12 +21,36 @@ const typeDefs = gql`
     createLolly (recipientName: String!, message: String!,senderName: String!, flavourTop: String!,flavourMiddle: String!,flavourBottom: String!) : Lolly
   }
 `
-
+const adminClient = new faunadb.Client({secret: process.env.SECRET});
 
 const resolvers = {
   Query: {
-    hello: () => {
-      return 'Hello, Lolly!'
+    getLollies: async (root, args, context) => {
+      try {
+        const result = await adminClient.query(
+          q.Map(
+            q.Paginate(q.Match(q.Index("lollies"))),
+            q.Lambda(x => q.Get(x))
+          )
+        )
+        console.log(result.data)
+
+        return result.data.map(d => {
+          return {
+            id: d.ts,
+            flavourTop: d.data.flavourTop,
+            flavourMiddle: d.data.flavourTop,
+            flavourBottom: d.data.flavourBottom,
+            recipientName: d.data.recipientName,
+            senderName: d.data.senderName,
+            message: d.data.message,
+            lollyPath: d.data.lollyPath,
+
+          }
+        })
+      } catch (err) {
+        console.log(err)
+      }
     },
   },
   Mutation : {
@@ -34,11 +58,11 @@ const resolvers = {
 
         console.log("args = ",args);
       
-      const client = new faunadb.Client({secret: process.env.SECRET});
+      
       const id = shortid.generate();
       args.lollyPath = id
 
-      const result = await client.query(
+      const result = await adminClient.query(
         q.Create(q.Collection("lolly"), {
           data: args
         })

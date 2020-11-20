@@ -1,18 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Field, Form, Formik, useFormik } from "formik"
 import { Header } from '../component/Header'
 import { Lolly } from '../component/lolly'
-import * as Yup from "yup"
 import { useMutation, useQuery } from '@apollo/client'
 import gql from "graphql-tag"
 import Share from "../../src/component/Share"
 import shortid from "shortid"
-import { navigate } from "gatsby"
+
 const ADD_LOLLY = gql`
   mutation createLolly($recipientName: String!, $message: String!, $senderName: String!, $flavourTop: String!, $flavourMiddle: String!,$flavourBottom: String!) {
     createLolly(recipientName: $recipientName, message: $message, senderName: $senderName, flavourTop: $flavourTop, flavourMiddle: $flavourMiddle,flavourBottom: $flavourBottom) {
+       senderName
         message
         lollyPath
+        recipientName
     }
   }
   `
@@ -20,7 +20,7 @@ const ADD_LOLLY = gql`
 
 export default function newLolly() {
 
-    const [createLolly] = useMutation(ADD_LOLLY)
+    const [createLolly,{ data }] = useMutation(ADD_LOLLY)
 
   const [flavourTop, setFlavourTop] = useState("#ef0078")
   const [flavourMiddle, setFlavourMiddle] = useState("#ff8d00")
@@ -47,13 +47,22 @@ export default function newLolly() {
       },
     })
     setLoading(false)
-    // navigate(`/lollies/${id}`)
-  }
 
+  }
+  useEffect(() => {
+    async function runHook() {
+        const response = await fetch("https://api.netlify.com/build_hooks/5fb7d33234b12500f0272719", {
+            method: "POST",
+        });
+
+    }
+    runHook();
+
+}, [data])
   return (
     <div className="container">
       <Header />
-      <div className="lollyContainer">
+      {!data ? <>   <div className="lollyFormDiv">
         <div>
           <Lolly
             fillLollyBottom={flavourEnd}
@@ -61,7 +70,7 @@ export default function newLolly() {
             fillLollyTop={flavourTop}
           />
         </div>
-        <div className="colorContainer">
+        <div className="lollyFlavourDiv">
           <label>
             <input
               type="color"
@@ -114,6 +123,7 @@ export default function newLolly() {
           </div>
         </div>
       </div>
+      </>: <Share lollyPath={data?.addLolly?.lollyPath} recipientName={data?.addLolly?.recipientName} senderName={data?.addLolly?.senderName} message={data?.addLolly?.message} />}
     </div>
   )
 }

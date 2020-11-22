@@ -19,7 +19,7 @@ exports.createPages = async ({ graphql, actions }) => {
 
   data.Lollies.getLollies.forEach(node => {
     createPage({
-      path: `lolly/${node.lollyPath}`,
+      path: `newLolly/${node.lollyPath}`,
       component: path.resolve("./src/templates/template"),
       context: {
         flavourTop: node.flavourTop,

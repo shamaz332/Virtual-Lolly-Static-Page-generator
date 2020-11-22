@@ -3,7 +3,7 @@ import {Header} from '../component/Header'
 import { Lolly } from '../component/lolly'
 import Share from '../component/Share'
 
-const Template = ({ context: { flavourTop, flavourMiddle, flavourBottom, recipientName, senderName, message, lollyPath } }) => {
+const Template = ({ pageContext: { flavourTop, flavourMiddle, flavourBottom, recipientName, senderName, message, lollyPath } }) => {
 
     return (
       

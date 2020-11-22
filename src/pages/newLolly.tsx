@@ -20,8 +20,7 @@ const ADD_LOLLY = gql`
 
 export default function newLolly() {
 
-    const [createLolly,{ data }] = useMutation(ADD_LOLLY)
-
+  const [createLolly,{ data }] = useMutation(ADD_LOLLY)
   const [flavourTop, setFlavourTop] = useState("#ef0078")
   const [flavourMiddle, setFlavourMiddle] = useState("#ff8d00")
   const [flavourEnd, setFlavourEnd] = useState("#dd0074")

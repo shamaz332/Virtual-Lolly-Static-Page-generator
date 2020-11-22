@@ -1,23 +1,21 @@
 const path = require("path")
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
-
   const { data } = await graphql(`
-  query MyQuery {
+  {
     Lollies {
       getLollies {
-        flavourBottom
-        flavourMiddle
         flavourTop
+        flavourMiddle
+        flavourBottom
         lollyPath
         message
-        recipientName
         senderName
+        recipientName
       }
     }
   }
-  
-  `)
+`)
 
   data.Lollies.getLollies.forEach(node => {
     createPage({

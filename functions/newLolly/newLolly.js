@@ -6,7 +6,7 @@ const shortid = require("shortid");
 require("dotenv").config()
 const typeDefs = gql`
   type Query {
-    getLollies: [Lolly]
+    getLollies: [Lolly!]
   }
   type Lolly {
     recipientName: String!
@@ -68,7 +68,6 @@ const resolvers = {
         })
       );
         
-      console.log('result', result);
       console.log('result', result.data);
       return result.data
     },

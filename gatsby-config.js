@@ -4,9 +4,9 @@ module.exports = {
     {
       resolve: "gatsby-source-graphql",
       options: {
-        typeName: "Lolly",
+        typeName: "GCMS",
         fieldName: "Lollies",
-        url: "https://shamaz-vlolly.netlify.app/.netlify/functions/newLolly",
+        url: "http://localhost:8888/.netlify/functions/newLolly",
       },
     },
   ],

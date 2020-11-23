@@ -21,7 +21,7 @@ const typeDefs = gql`
     createLolly (recipientName: String!, message: String!,senderName: String!, flavourTop: String!,flavourMiddle: String!,flavourBottom: String!) : Lolly
   }
 `
-const adminClient = new faunadb.Client({secret: process.env.SECRET});
+const adminClient = new faunadb.Client({secret: "fnAD6jOBMOACBYsnWofZoXmjA9hpeCGckVF9JZwU"});
 
 const resolvers = {
   Query: {

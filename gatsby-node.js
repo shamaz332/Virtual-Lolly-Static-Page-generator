@@ -1,6 +1,10 @@
 const path = require("path")
-exports.createPages = async ({ graphql, actions:{ createPage } , reporter }) => {
-  const {data} = await graphql(`
+// Implement the Gatsby API “createPages”. This is called once the
+// data layer is bootstrapped to let plugins create pages from data.
+exports.createPages = async ({ graphql, actions, reporter }) => {
+  const { createPage } = actions
+
+  const result = await graphql(`
     {
       swapi {
         getLollies {
@@ -15,11 +19,11 @@ exports.createPages = async ({ graphql, actions:{ createPage } , reporter }) => 
       }
     }
   `)
-  if (data.errors) {
-    reporter.panicOnBuild("Error while running GraphQL query.")
+  if (result.errors) {
+    reporter.panicOnBuild(`Error while running GraphQL query.`)
     return
   }
-  data.swapi.getLollies.forEach(
+  result.data.swapi.getLollies.forEach(
     ({
       flavourTop,
       flavourMiddle,

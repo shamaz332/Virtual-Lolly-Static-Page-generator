@@ -35,7 +35,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     }) => {
       createPage({
         path: `newLolly/${lollyPath}`,
-        component: path.resolve("./src/templates/template.tsx"),
+        component: path.resolve("./src/templates/template"),
         context: {
           flavourTop,
           flavourMiddle,

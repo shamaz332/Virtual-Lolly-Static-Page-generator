@@ -8,7 +8,7 @@ module.exports = {
         // This is the field under which it's accessible
         fieldName: "swapi",
         // URL to query from
-        url: "https://localhost:8888/.netlify/functions/newLolly",
+        url: "/.netlify/functions/newLolly",
         
       },
     },

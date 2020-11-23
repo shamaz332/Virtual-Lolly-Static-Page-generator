@@ -117,7 +117,7 @@ export default function newLolly() {
           />
           <div className="formBtn-wrapper">
             <button onClick={handleSubmit}>
-              {loading ? "freeze..." : "freeze"}
+             Freeze Lolly
             </button>
           </div>
         </div>
